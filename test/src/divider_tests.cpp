@@ -1,13 +1,9 @@
-//
-// Created by Konstantin Gredeskoul on 5/16/17.
-//
-#include <division.h>
+#include "division.h"
+#include "division.hpp"
+
 #include "gtest/gtest.h"
 
-using namespace std;
-
-
-#define VI vector<long long>
+#define VI std::vector<long long>
 
 class DividerTest : public ::testing::Test {
 
@@ -23,12 +19,22 @@ protected:
   virtual void TearDown() {
   };
 
-  virtual void verify(int index) {
-    Fraction       f        = Fraction{numerators.at(index), denominators.at(index)};
-    DivisionResult expected = DivisionResult{divisions.at(index), remainders.at(index)};
+  virtual void verify_old(int index) {
+    Fraction       f        = Fraction {numerators.at(index), denominators.at(index)};
+    DivisionResult expected = DivisionResult {divisions.at(index), remainders.at(index)};
     DivisionResult result   = Division(f).divide();
     EXPECT_EQ(result.division, expected.division);
     EXPECT_EQ(result.remainder, expected.remainder);
+  }
+
+  virtual void verify(int index) {
+    int64_t remainder, result;
+
+    lib_clear_error();
+    lib_divide(numerators.at(index), denominators.at(index), &remainder, &result);
+    EXPECT_EQ(lib_get_error(), 0);
+    EXPECT_EQ(remainder, remainders.at(index));
+    EXPECT_EQ(result, divisions.at(index));
   }
 };
 
@@ -48,12 +54,12 @@ TEST_F(DividerTest, Long_DivideBy_Long) {
   verify(3);
 }
 
-TEST_F(DividerTest, DivisionByZero) {
+TEST_F(DividerTest, DivisionByZeroOld) {
   Division d = Division(Fraction{1, 0});
   try {
     d.divide();
-    FAIL() << "Expected divide() method to throw DivisionByZeroException";
-  } catch (DivisionByZero const &err) {
+    FAIL() << "Expected divide() method to throw LibException with code 2";
+  } catch (LibException const &err) {
     EXPECT_EQ(err.what(), DIVISION_BY_ZERO_MESSAGE);
   }
   catch (...) {
@@ -61,3 +67,12 @@ TEST_F(DividerTest, DivisionByZero) {
   }
 }
 
+TEST_F(DividerTest, DivisionByZero) {
+  lib_clear_error();
+  int64_t remainder, result;
+  lib_divide(1, 0, &remainder, &result);
+  EXPECT_EQ(lib_get_error(), 2);
+  char* err = nullptr;
+  lib_get_error_details(2, &err);
+  EXPECT_EQ(strcmp(err, "Division by zero is illegal"), 0);
+}
