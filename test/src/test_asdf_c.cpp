@@ -10,6 +10,7 @@ namespace {
     protected:
     std::filesystem::path _temp_path;
     virtual void SetUp() {
+      asdf_clear_error();
       _temp_path = {std::filesystem::temp_directory_path() /= std::tmpnam(nullptr)};
 
       // Attempt to create the directory.
@@ -50,40 +51,14 @@ namespace {
 
 TEST_F(ASDFTestC, Open) {
   auto path = _temp_path / "test.asdf";
-
-
-/*def test_mode_fail(tmpdir):
-    path = os.path.join(str(tmpdir), "test.asdf")
-
-    with pytest.raises(ValueError):
-        generic_io.get_file(path, mode="r+")*/
-
-  //create a temporary directory for tests
-
-}
-
-TEST_F(DividerTestC, 5_DivideBy_2) {
-  verify(0);
-}
-
-TEST_F(DividerTestC, 9_DivideBy_3) {
-  verify(1);
-}
-
-TEST_F(DividerTestC, 17_DivideBy_19) {
-  verify(2);
+  auto handle = asdf_read(path.string().c_str());
+  EXPECT_EQ(handle, nullptr);
+  EXPECT_EQ(asdf_get_error(), 3);
+  const char* err = nullptr;
+  asdf_get_error_details(3, &err);
+  EXPECT_EQ(strcmp(err, "File does not exist"), 0);
 }
 
 TEST_F(DividerTestC, Long_DivideBy_Long) {
   verify(3);
-}
-
-TEST_F(DividerTestC, DivisionByZero) {
-  asdf_clear_error();
-  int64_t remainder, result;
-  lib_divide(1, 0, &remainder, &result);
-  EXPECT_EQ(asdf_get_error(), 2);
-  const char* err = nullptr;
-  asdf_get_error_details(2, &err);
-  EXPECT_EQ(strcmp(err, "Division by zero is illegal"), 0);
 }
