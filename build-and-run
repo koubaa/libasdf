@@ -17,44 +17,24 @@
   exit 1
 }
 
-export BashMatic="${HOME}/.bashmatic"
-
-[[ -s ${BashMatic}/init.sh ]] || {
-  rm -rf "${BashMatic}" 2>/dev/null
-  git clone https://github.com/kigster/bashmatic "${BashMatic}" 2>&1 1>/dev/null
-}
-
-source "${BashMatic}/init.sh"
-
 export ProjectRoot=$(pwd)
-export BuildDir="${ProjectRoot}/build/run"
-export BashLibRoot="${ProjectRoot}/bin/lib-bash"
-export LibBashRepo="https://github.com/kigster/lib-bash"
 
-divider.header() {
-  h1.purple "Fractional Division With Remainder: A CMake Project Template with Tests"
-  local OIFC=${IFC}
-  IFS="|" read -r -a gcc_info <<< "$(gcc --version 2>&1 | tr '\n' '|')"
-  export IFC=${OIFC}
-  h1 "${bldylw}GCC" "${gcc_info[1]}" "${gcc_info[2]}" "${gcc_info[3]}" "${gcc_info[4]}"
-  h1 "${bldylw}GIT:    ${bldblu}$(git --version)"
-  h1 "${bldylw}CMAKE:  ${bldblu}$(cmake --version | tr '\n' ' ')"
-}
-
-divider.setup() {
-  hl.subtle "Creating Build Folder..."
+setup() {
+  echo Creating Build Folder...
+  echo
   mkdir -p build/run
   git submodule init && git submodule update
 
   [[ -f .idea/workspace.xml ]] || cp .idea/workspace.xml.example .idea/workspace.xml
 }
 
-divider.clean() {
-  hl.subtle "Cleaning output folders..."
+clean() {
+  echo Cleaning output folders...
+  echo
   rm -rf bin/d* include/d* lib/*
 }
 
-divider.build() {
+build() {
   cd build/run
   cmake ../..
   make -j 12
@@ -62,7 +42,7 @@ divider.build() {
   cd ${ProjectRoot}
 }
 
-divider.tests() {
+tests() {
   if [[ -f bin/divider_tests ]]; then
     echo && ./bin/divider_tests
   else
@@ -71,14 +51,13 @@ divider.tests() {
   fi
 }
 
-divider.examples() {
+examples() {
   [[ ! -f bin/divider ]] && {
     error "You don't have the cmpiled binary yet".
     exit 3
   }
 
-  run.set-all show-output-on
-
+  echo "running command line examples"
   echo
   ./bin/divider 11 7
   echo
@@ -89,11 +68,10 @@ divider.examples() {
 }
 
 main() {
-  divider.header
-  divider.setup
-  divider.build
-  divider.tests
-  divider.examples
+  setup
+  build
+  tests
+  examples
 }
 
-(( $_s_ )) || main
+main
