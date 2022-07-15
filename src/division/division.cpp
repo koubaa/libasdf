@@ -1,7 +1,7 @@
 #include "division.h"
 
+#include <cstdint>
 #include <string>
-#include <thread>
 #include <vector>
 
 thread_local int32_t lib_errno;
@@ -17,7 +17,7 @@ int32_t lib_get_error() {
   return lib_errno;
 }
 
-void lib_get_error_details(int val, const char** error) {
+void lib_get_error_details(int32_t val, const char** error) {
   static const std::vector<std::string> errors {
     "Argument null error",
     "Division by zero is illegal"

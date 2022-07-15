@@ -43,30 +43,28 @@ divider.header() {
 
 divider.setup() {
   hl.subtle "Creating Build Folder..."
-  run "mkdir -p build/run"
-  run "git submodule init && git submodule update"
+  mkdir -p build/run
+  git submodule init && git submodule update
 
   [[ -f .idea/workspace.xml ]] || cp .idea/workspace.xml.example .idea/workspace.xml
 }
 
 divider.clean() {
   hl.subtle "Cleaning output folders..."
-  run 'rm -rf bin/d* include/d* lib/*'
+  rm -rf bin/d* include/d* lib/*
 }
 
 divider.build() {
-  run "cd build/run"
-  run "cmake ../.. "
-  run.set-next show-output-on
-  run "make -j 12"
-  run "make install | egrep -v 'gmock|gtest'"
-  run "cd ${ProjectRoot}"
+  cd build/run
+  cmake ../..
+  make -j 12
+  make install | egrep -v 'gmock|gtest'
+  cd ${ProjectRoot}
 }
 
 divider.tests() {
   if [[ -f bin/divider_tests ]]; then
-    run.set-next show-output-on
-    run "echo && bin/divider_tests"
+    echo && ./bin/divider_tests
   else
     printf "${bldred}Can't find installed executable ${bldylw}bin/divider_tests.${clr}\n"
     exit 2
@@ -81,14 +79,13 @@ divider.examples() {
 
   run.set-all show-output-on
 
-  hr
-  run "bin/divider 11 7"
-  hr
-  run "bin/divider 1298798375 94759897"
-  hr
-  run "bin/divider 78 17"
-  hr
-
+  echo
+  ./bin/divider 11 7
+  echo
+  ./bin/divider 1298798375 94759897
+  echo
+  ./bin/divider 78 17
+  echo
 }
 
 main() {

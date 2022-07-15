@@ -2,20 +2,25 @@
 
 #include "division.h"
 
+#include <cstdint>
 #include <stdexcept>
+#include <string>
 
-class LibException : public exception {
+class LibException : public std::exception {
   std::string _what;
   int32_t _error;
 public:
   LibException(int32_t errorcode) : _error(errorcode) {
-    char* error;
+    const char* error;
     lib_get_error_details(_error, &error);
     if (error != nullptr)
       _what = error;
   }
   virtual const char *what() const throw() {
     return _what.c_str();
+  }
+  int32_t code() const {
+    return _error;
   }
 };
 
@@ -38,9 +43,6 @@ public:
   explicit Division(Fraction fraction) {
     this->fraction = fraction;
   }
-
-  ~Division() {
-  };
 
   DivisionResult divide() {
     lib_clear_error();

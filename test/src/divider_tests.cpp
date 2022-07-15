@@ -60,7 +60,7 @@ TEST_F(DividerTest, DivisionByZeroOld) {
     d.divide();
     FAIL() << "Expected divide() method to throw LibException with code 2";
   } catch (LibException const &err) {
-    EXPECT_EQ(err.what(), DIVISION_BY_ZERO_MESSAGE);
+    EXPECT_EQ(err.what(), std::string("Division by zero is illegal"));
   }
   catch (...) {
     FAIL() << "Expected DivisionByZeroException!";
@@ -72,7 +72,7 @@ TEST_F(DividerTest, DivisionByZero) {
   int64_t remainder, result;
   lib_divide(1, 0, &remainder, &result);
   EXPECT_EQ(lib_get_error(), 2);
-  char* err = nullptr;
+  const char* err = nullptr;
   lib_get_error_details(2, &err);
   EXPECT_EQ(strcmp(err, "Division by zero is illegal"), 0);
 }
