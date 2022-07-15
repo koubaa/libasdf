@@ -1,32 +1,6 @@
 #!/usr/bin/env bash
-#
-# © 2018-2019 Konstantin Gredeskoul, All Rights Reserved.
-# MIT License
-#
-# WARNING: This BASH script is completely optional. You don't need it to build this project.
-#
-# If you choose to run this script to build the project, run:
-#
-#     $ ./build-and-run
-#
-# It will clean, build and run the tests.
-#
-
-[[ -z $(which git) ]] && {
-  echo "You need git installed. Please run 'xcode-select --install' first."
-  exit 1
-}
 
 export ProjectRoot=$(pwd)
-
-setup() {
-  echo Creating Build Folder...
-  echo
-  mkdir -p build/run
-  git submodule init && git submodule update
-
-  [[ -f .idea/workspace.xml ]] || cp .idea/workspace.xml.example .idea/workspace.xml
-}
 
 clean() {
   echo Cleaning output folders...
@@ -51,27 +25,9 @@ tests() {
   fi
 }
 
-examples() {
-  [[ ! -f bin/divider ]] && {
-    error "You don't have the cmpiled binary yet".
-    exit 3
-  }
-
-  echo "running command line examples"
-  echo
-  ./bin/divider 11 7
-  echo
-  ./bin/divider 1298798375 94759897
-  echo
-  ./bin/divider 78 17
-  echo
-}
-
 main() {
-  setup
   build
   tests
-  examples
 }
 
 main

@@ -39,7 +39,8 @@ First we need to check out the git repo:
     https://github.com/kigster/cmake-project-template \
     my-project
 ❯ cd my-project
-❯ bash build-and-run
+❯ ./configure
+❯ ./build-and-run
 ```
 
 The script `build-and-run` is a short-cut — you shouldn't really be using this script to build your project, but see how to do it properly below.
@@ -86,9 +87,7 @@ But with arguments, it computes as expected the denominator:
 
 ### Using it as a C++ Library
 
-We build a static library that, given a simple fraction will return the integer result of the division, and the remainder.
-
-We can use it from C++ like so:
+We build a shared object, c++ usage:
 
 ```cpp
 #include "division.hpp"
@@ -117,11 +116,7 @@ Tests:
 
 #### Contributing
 
-**Pull Requests are WELCOME!** Please submit any fixes or improvements, and I promise to review it as soon as I can at the project URL:
-
- * [Project Github Home](https://github.com/kigster/cmake-project-template)
- * [Submit Issues](https://github.com/kigster/cmake-project-template/issues)
- * [Pull Requests](https://github.com/kigster/cmake-project-template/pulls)
+It would be nice to have better integration of third_party.
 
 ### License
 
@@ -129,4 +124,4 @@ Open sourced under MIT license, the terms of which can be read here — [MIT Lic
 
 ### Acknowledgements
 
-This project is a derivative of the [CMake Tutorial](https://cmake.org/cmake-tutorial/), and is aimed at saving time for starting new projects in C++ that use CMake and GoogleTest.
+This project is a derivative of [cmake-project-template](https://github.com/kigster/cmake-project-template), to save me time in starting c++ projects using the hourglass pattern that I prefer.  It uses CMake and google test.
