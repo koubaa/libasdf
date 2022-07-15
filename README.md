@@ -1,6 +1,3 @@
-[![Build Status](https://travis-ci.org/kigster/cmake-project-template.svg?branch=master)](https://travis-ci.org/kigster/cmake-project-template)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkigster%2Fcmake-project-template.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkigster%2Fcmake-project-template?ref=badge_shield)
-
 # CMake C++ Project Template
 
 ### Division with a remainder library
@@ -28,7 +25,6 @@ You will need:
 
  * A modern C/C++ compiler
  * CMake 3.1+ installed (on a Mac, run `brew install cmake`)
- * If you prefer to code in a great IDE, I highly recommend [Jetbrains CLion](https://www.jetbrains.com/clion/). It is fully compatible with this project.
 
 ### Building The Project
 
@@ -45,8 +41,6 @@ First we need to check out the git repo:
 ❯ cd my-project
 ❯ bash build-and-run
 ```
-
-The output of this script is rather long and is shown [on this screenshot](doc/build-and-run.png).
 
 The script `build-and-run` is a short-cut — you shouldn't really be using this script to build your project, but see how to do it properly below.
 
@@ -74,24 +68,6 @@ Now we can build this project, and below we show three separate ways to do so.
 
 ```bash
 ❯ bin/divider_tests
-[==========] Running 5 tests from 1 test case.
-[----------] Global test environment set-up.
-[----------] 5 tests from DividerTest
-[ RUN      ] DividerTest.5_DivideBy_2
-[       OK ] DividerTest.5_DivideBy_2 (1 ms)
-[ RUN      ] DividerTest.9_DivideBy_3
-[       OK ] DividerTest.9_DivideBy_3 (0 ms)
-[ RUN      ] DividerTest.17_DivideBy_19
-[       OK ] DividerTest.17_DivideBy_19 (0 ms)
-[ RUN      ] DividerTest.Long_DivideBy_Long
-[       OK ] DividerTest.Long_DivideBy_Long (0 ms)
-[ RUN      ] DividerTest.DivisionByZero
-[       OK ] DividerTest.DivisionByZero (0 ms)
-[----------] 5 tests from DividerTest (1 ms total)
-
-[----------] Global test environment tear-down
-[==========] 5 tests from 1 test case ran. (1 ms total)
-[  PASSED  ] 5 tests.
 ```
 
 #### Running the CLI Executable
@@ -100,41 +76,13 @@ Without arguments, it prints out its usage:
 
 ```bash
 ❯ bin/divider
-
-Divider © 2018 Monkey Claps Inc.
-
-Usage:
-	divider <numerator> <denominator>
-
-Description:
-	Computes the result of a fractional division,
-	and reports both the result and the remainder.
 ```
 
 But with arguments, it computes as expected the denominator:
 
 ```bash
 ❯ bin/divider 112443477 12309324
-
-Divider © 2018 Monkey Claps Inc.
-
-Division : 112443477 / 12309324 = 9
-Remainder: 112443477 % 12309324 = 1659561
 ```
-
-### Building in CLion
-
-> **NOTE**: Since JetBrains software [does not officially support git submodules](https://youtrack.jetbrains.com/issue/IDEA-64024), you must run `git submodule init && git submodule update` before starting CLion on a freshly checked-out repo.
-
-> **NOTE**: We recommend that you copy file `.idea/workspace.xml.example` into `.idea/workspace.xml` **before starting CLion**. It will provide a good starting point for your project's workspace.
-
-Assuming you've done the above two steps, you can start CLion, and open the project's top level folder. CLion should automatically detect the top level `CMakeLists.txt` file and provide you with the full set of build targets.
-
-Select menu option **Build   ➜ Build Project**, and then **Build ➜ Install**.
-
-![CLION](doc/cmake-clion.png)
-
-The above screenshot is an example of CLion with this project open.
 
 ### Using it as a C++ Library
 
@@ -143,8 +91,8 @@ We build a static library that, given a simple fraction will return the integer 
 We can use it from C++ like so:
 
 ```cpp
+#include "division.hpp"
 #include <iostream>
-#include <division>
 
 Fraction       f = Fraction{25, 7};
 DivisionResult r = Division(f).divide();
@@ -177,12 +125,7 @@ Tests:
 
 ### License
 
-&copy; 2017-2019 Konstantin Gredeskoul.
-
 Open sourced under MIT license, the terms of which can be read here — [MIT License](http://opensource.org/licenses/MIT).
-
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkigster%2Fcmake-project-template.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkigster%2Fcmake-project-template?ref=badge_large)
 
 ### Acknowledgements
 
