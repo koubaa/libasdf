@@ -1,2 +1,2 @@
-add_subdirectory(division)
-add_subdirectory(divider)
+add_subdirectory(asdf)
+add_subdirectory(sample)

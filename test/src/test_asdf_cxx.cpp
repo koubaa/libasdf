@@ -1,4 +1,4 @@
-#include "division.hpp"
+#include "asdf.hpp"
 
 #include "gtest/gtest.h"
 
@@ -47,7 +47,7 @@ TEST_F(DividerTestCXX, DivisionByZero) {
   try {
     d.divide();
     FAIL() << "Expected divide() method to throw LibException with code 2";
-  } catch (LibException const &err) {
+  } catch (asdf::error const &err) {
     EXPECT_EQ(err.what(), std::string("Division by zero is illegal"));
   }
   catch (...) {

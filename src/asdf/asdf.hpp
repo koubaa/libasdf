@@ -1,28 +1,30 @@
 #pragma once
 
-#include "division.h"
+#include "asdf.h"
 
 #include <cstdint>
 #include <stdexcept>
 #include <string>
 
-class LibException : public std::exception {
-  std::string _what;
-  int32_t _error;
-public:
-  LibException(int32_t errorcode) : _error(errorcode) {
-    const char* error;
-    lib_get_error_details(_error, &error);
-    if (error != nullptr)
-      _what = error;
-  }
-  virtual const char *what() const throw() {
-    return _what.c_str();
-  }
-  int32_t code() const {
-    return _error;
-  }
-};
+namespace asdf {
+  class error : public std::exception {
+    std::string _what;
+    int32_t _error;
+  public:
+    error(int32_t errorcode) : _error(errorcode) {
+      const char* error;
+      asdf_get_error_details(_error, &error);
+      if (error != nullptr)
+        _what = error;
+    }
+    virtual const char *what() const throw() {
+      return _what.c_str();
+    }
+    int32_t code() const {
+      return _error;
+    }
+  };
+}
 
 struct Fraction {
   int64_t numerator;
@@ -45,13 +47,13 @@ public:
   }
 
   DivisionResult divide() {
-    lib_clear_error();
+    asdf_clear_error();
     DivisionResult result;
     lib_divide(fraction.numerator, fraction.denominator, &result.remainder, &result.division);
-    int32_t errorcode = lib_get_error();
+    int32_t errorcode = asdf_get_error();
     if (errorcode != 0) {
-      lib_clear_error();
-      throw LibException(errorcode);
+      asdf_clear_error();
+      throw asdf::error(errorcode);
     }
     return result;
   }

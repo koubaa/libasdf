@@ -17,10 +17,10 @@ build() {
 }
 
 tests() {
-  if [[ -f bin/divider_tests ]]; then
-    echo && ./bin/divider_tests
+  if [[ -f bin/asdf_tests ]]; then
+    echo && ./bin/asdf_tests
   else
-    printf "${bldred}Can't find installed executable ${bldylw}bin/divider_tests.${clr}\n"
+    printf "${bldred}Can't find installed executable ${bldylw}bin/asdf_tests.${clr}\n"
     exit 2
   fi
 }

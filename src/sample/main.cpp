@@ -1,4 +1,4 @@
-#include "division.hpp"
+#include "asdf.hpp"
 
 #include <iostream>
 
@@ -22,7 +22,7 @@ int main(int argc, const char *argv[]) {
 
     std::cout << "Division : " << f.numerator << " / " << f.denominator << " = " << r.division << "\n";
     std::cout << "Remainder: " << f.numerator << " % " << f.denominator << " = " << r.remainder << "\n";
-  } catch (const LibException& ex) {
+  } catch (const asdf::error& ex) {
     if (ex.code() == 2)
     std::cout << "Can not divide by zero, Homer. Sober up!\n";
   }

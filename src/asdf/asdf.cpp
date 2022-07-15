@@ -1,23 +1,23 @@
-#include "division.h"
+#include "asdf.h"
 
 #include <cstdint>
 #include <string>
 #include <vector>
 
-thread_local int32_t lib_errno;
+thread_local int32_t asdf_errno;
 
-static void lib_set_error(int32_t val) {
-  lib_errno = val;
+static void asdf_set_error(int32_t val) {
+  asdf_errno = val;
 }
-void lib_clear_error() {
-  lib_errno = 0;
-}
-
-int32_t lib_get_error() {
-  return lib_errno;
+void asdf_clear_error() {
+  asdf_errno = 0;
 }
 
-void lib_get_error_details(int32_t val, const char** error) {
+int32_t asdf_get_error() {
+  return asdf_errno;
+}
+
+void asdf_get_error_details(int32_t val, const char** error) {
   static const std::vector<std::string> errors {
     "Argument null error",
     "Division by zero is illegal"
@@ -37,10 +37,10 @@ void lib_divide(
   int64_t* result)
 {
   if (!remainder || !result)
-    lib_set_error(1);
+    asdf_set_error(1);
 
   if (denominator == 0L)
-    lib_set_error(2);
+    asdf_set_error(2);
 
   *result = numerator / denominator;
   *remainder = numerator % denominator;

@@ -99,6 +99,6 @@ script:
   - cmake ../..
   - make install
   - cd ../..
-  - ./bin/divider_tests
-  - ./bin/divider 15 7
+  - ./bin/asdf_tests
+  - ./bin/sample 15 7
 
