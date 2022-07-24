@@ -60,6 +60,12 @@ asdf_file_handle asdf_read(const char* name) {
   }
 
   FILE* p_file = fopen(name, "r");
+
+  if (!p_file) {
+    asdf_set_error(2);
+    return nullptr;
+  }
+
   asdf_file new_handle {
     .valid = 1,
     .file_handle = p_file,
