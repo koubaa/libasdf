@@ -1,7 +1,9 @@
 #include "asdf.h"
 
 #include <cstdint>
+#include <cstdio>
 #include <filesystem>
+#include <fstream>
 #include <map>
 #include <string>
 #include <vector>
@@ -22,7 +24,7 @@ int32_t asdf_get_error() {
 void asdf_get_error_details(int32_t val, const char** error) {
   static const std::vector<std::string> errors {
     "Argument null error",
-    "Division by zero is illegal",
+    "File permission error",
     "File does not exist"
   };
   if (error == nullptr)
@@ -34,27 +36,40 @@ void asdf_get_error_details(int32_t val, const char** error) {
 }
 
 struct asdf_file {
-  FILE* handle;
-  int mode;
+  int valid; // 0 if the file is no longer used.
+  FILE* file_handle; // file stream, valid while active.
+  int mode; // 0 - read, 1 - write
 };
 
-//todo store handles somehow
-thread_local asdf_file active_file;
-
+// asdf file handles are integers into this map
+static int64_t next_active_file_handle = 1;
+static std::map<int64_t, asdf_file> active_files;
 
 /**
  * @brief reads the file with the given name
  * 
- * @param name 
+ * @param name name of file
  * @return asdf_file_handle 
  * @remark returns nullptr and sets error if the file cannot be opened.
+ *         TODO - make it threadsafe by locking around active_files
  */
 asdf_file_handle asdf_read(const char* name) {
   if (!std::filesystem::exists(name)) {
     asdf_set_error(3);
     return nullptr;
   }
-  return nullptr;
+
+  FILE* p_file = fopen(name, "r");
+  asdf_file new_handle {
+    .valid = 1,
+    .file_handle = p_file,
+    .mode = 0
+  };
+
+  //this is *NOT* threadsafe
+  auto handle = next_active_file_handle++;
+  active_files[handle] = new_handle;
+  return (asdf_file_handle)handle;
 }
 
 void lib_divide(

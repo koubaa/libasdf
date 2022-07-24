@@ -1,6 +1,8 @@
-#include "gtest/gtest.h"
+#include "src/acutest.h"
 
-int main(int argc, char *argv[]) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
+extern void test_asdf_c_basic(void);
+
+TEST_LIST = {
+   { "c_basic", test_asdf_c_basic },
+   { NULL, NULL }     /* zeroed record marking the end of the list */
+};
