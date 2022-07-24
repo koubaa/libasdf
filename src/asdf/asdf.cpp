@@ -77,19 +77,3 @@ asdf_file_handle asdf_read(const char* name) {
   active_files[handle] = new_handle;
   return (asdf_file_handle)handle;
 }
-
-void lib_divide(
-  int64_t numerator,
-  int64_t denominator,
-  int64_t* remainder,
-  int64_t* result)
-{
-  if (!remainder || !result)
-    asdf_set_error(1);
-
-  if (denominator == 0L)
-    asdf_set_error(2);
-
-  *result = numerator / denominator;
-  *remainder = numerator % denominator;
-}

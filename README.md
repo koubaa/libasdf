@@ -27,16 +27,8 @@ You will need:
 
 #### Running the CLI Executable
 
-Without arguments, it prints out its usage:
+TODO:
 
-```bash
-❯ bin/sample
-```
-
-But with arguments, it computes as expected the denominator:
-
-```bash
-❯ bin/sample 112443477 12309324
 ```
 
 ### Using it as a C++ Library
@@ -44,14 +36,6 @@ But with arguments, it computes as expected the denominator:
 We build a shared object, c++ usage:
 
 ```cpp
-#include "asdf.hpp"
-#include <iostream>
-
-Fraction       f = Fraction{25, 7};
-DivisionResult r = Division(f).divide();
-
-std::cout << "Result of the division is " << r.division;
-std::cout << "Remainder of the division is " << r.remainder;
 ```
 
 ## File Locations

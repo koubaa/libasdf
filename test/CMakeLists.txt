@@ -1,4 +1,4 @@
-project(divider_tests)
+project(asdf_tests)
 
 include_directories(${ASDF_HEADERS_DIR})
 
